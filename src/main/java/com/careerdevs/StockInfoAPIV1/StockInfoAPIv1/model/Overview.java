@@ -55,6 +55,9 @@ public class Overview {
     @Column(name = "dividend_date",nullable = false)
     private String dividendDate;
 
+    public long getId() {
+        return Id;
+    }
 
     public String getSymbol() {
         return symbol;
