@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -101,12 +102,127 @@ public class OverviewController {
         }
     }
 
+    @GetMapping("/symbol/{symbol}")
+    private ResponseEntity<?> getOverviewsBySymbol(@PathVariable String symbol){
+        try{
+            Optional<Overview> foundOverview = overviewRepository.findBySymbol(symbol);
+            if(foundOverview .isEmpty()){
+                ApiError.throwErr(404,symbol + "did not match any overview");
+
+            }
+
+            return ResponseEntity.ok(foundOverview);
+        }catch(HttpClientErrorException e) {
+            return ApiError.customApiError(e.getMessage(), e.getStatusCode().value());
+        }catch(Exception e){
+            return ApiError.genericApiError(e);
+        }
+    }
+
+    @GetMapping("/exchange/{exchange}")
+    private ResponseEntity<?> getOverviewsByExchange(@PathVariable String exchange){
+        try{
+            List<Overview> foundOverview = overviewRepository.findByExchange(exchange);
+            if(foundOverview.isEmpty()){
+                ApiError.throwErr(404,exchange + "did not match any overview");
+
+            }
+
+            return ResponseEntity.ok(foundOverview);
+        }catch(HttpClientErrorException e) {
+            return ApiError.customApiError(e.getMessage(), e.getStatusCode().value());
+        }catch(Exception e){
+            return ApiError.genericApiError(e);
+        }
+    }
+
+    @GetMapping("/name/{name}")
+    private ResponseEntity<?> getOverviewsByName(@PathVariable String name){
+        try{
+           Optional<Overview> foundOverview = overviewRepository.findByName(name);
+            if(foundOverview .isEmpty()){
+                ApiError.throwErr(404,name + "did not match any overview");
+
+            }
+
+            return ResponseEntity.ok(foundOverview);
+        }catch(HttpClientErrorException e) {
+            return ApiError.customApiError(e.getMessage(), e.getStatusCode().value());
+        }catch(Exception e){
+            return ApiError.genericApiError(e);
+        }
+    }
+    @GetMapping("/assetType/{assetType}")
+    private ResponseEntity<?> getOverviewsByAssetType(@PathVariable String assetType){
+        try{
+            List<Overview> foundOverview = overviewRepository.findByAssetType(assetType);
+            if(foundOverview.isEmpty()){
+                ApiError.throwErr(404,assetType + "did not match any overview");
+
+            }
+
+            return ResponseEntity.ok(foundOverview);
+        }catch(HttpClientErrorException e) {
+            return ApiError.customApiError(e.getMessage(), e.getStatusCode().value());
+        }catch(Exception e){
+            return ApiError.genericApiError(e);
+        }
+    }
+    @GetMapping("/currency/{currency}")
+    private ResponseEntity<?> getOverviewsByCurrency(@PathVariable String currency){
+        try{
+            List<Overview> foundOverview = overviewRepository.findByCurrency(currency);
+            if(foundOverview.isEmpty()){
+                ApiError.throwErr(404,currency + "did not match any overview");
+
+            }
+
+            return ResponseEntity.ok(foundOverview);
+        }catch(HttpClientErrorException e) {
+            return ApiError.customApiError(e.getMessage(), e.getStatusCode().value());
+        }catch(Exception e){
+            return ApiError.genericApiError(e);
+        }
+    }
+    @GetMapping("/country/{country}")
+    private ResponseEntity<?> getOverviewsByCountry(@PathVariable String country){
+        try{
+            List<Overview> foundOverview = overviewRepository.findByCountry(country);
+            if(foundOverview.isEmpty()){
+                ApiError.throwErr(404,country + "did not match any overview");
+
+            }
+
+            return ResponseEntity.ok(foundOverview);
+        }catch(HttpClientErrorException e) {
+            return ApiError.customApiError(e.getMessage(), e.getStatusCode().value());
+        }catch(Exception e){
+            return ApiError.genericApiError(e);
+        }
+    }
+    @GetMapping("/sector/{sector}")
+    private ResponseEntity<?> getOverviewsBySector(@PathVariable String sector){
+        try{
+            List<Overview> foundOverview = overviewRepository.findBySector(sector);
+            if(foundOverview.isEmpty()){
+                ApiError.throwErr(404,sector + "did not match any overview");
+
+            }
+
+            return ResponseEntity.ok(foundOverview);
+        }catch(HttpClientErrorException e) {
+            return ApiError.customApiError(e.getMessage(), e.getStatusCode().value());
+        }catch(Exception e){
+            return ApiError.genericApiError(e);
+        }
+    }
+
     @DeleteMapping("/all")
     private ResponseEntity<?> deleteAllOverviews(){
         try{
             long allOverviewsCount = overviewRepository.count();
             if(allOverviewsCount == 0)
-                return ResponseEntity.ok("No Overview to delete");
+                return ResponseEntity.ok("No Overview to delete.");
             overviewRepository.deleteAll();
 
             return ResponseEntity.ok("Deleted Overviews: " + allOverviewsCount);
